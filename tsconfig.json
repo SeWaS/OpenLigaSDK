@@ -1,10 +1,11 @@
 {
     "compilerOptions": {
-      "target": "es6", // use es5 if you want to enable browser capability
+      "target": "es2017",
       "module": "commonjs",
       "declaration": true,
       "outDir": "./lib",
-      "strict": true
+      "strict": true,
+      "strictPropertyInitialization": false
     },
     "include": ["src"],
     "exclude": ["node_modules", "**/__tests__/*"]

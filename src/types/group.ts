@@ -1,5 +1,5 @@
 export class Group {
-    public groupId: number;
-    public groupName: string;
-    public groupOrderId: number;
+  public groupId: number;
+  public groupName: string;
+  public groupOrderId: number;
 }

@@ -31,7 +31,9 @@ describe('The OpenLigaDb SKD', () => {
 
     describe(`should be able to make calls based on 'getMatchData'`, () => {
 
-        const OPENLIGADB_API: string = 'https://www.openligadb.de/api/getmatchdata';
+        const OPENLIGADB_API = 'https://www.openligadb.de/api';
+        const OPENLIGA_GET_MATCH_DATA = `${OPENLIGADB_API}/getmatchdata`;
+        const OPENLIGA_GET_CURRENT_GROUP = `${OPENLIGADB_API}/getcurrentgroup`;
 
         describe('getMatchData for league', () => {
 
@@ -43,7 +45,7 @@ describe('The OpenLigaDb SKD', () => {
                     { matchId: 3 }
                 ];
     
-                nock(OPENLIGADB_API)
+                nock(OPENLIGA_GET_MATCH_DATA)
                     .get(`/${LEAGUE.BUNDESLIGA_2}`)
                     .reply(200, mockReturn);
     
@@ -65,7 +67,7 @@ describe('The OpenLigaDb SKD', () => {
                     { matchId: 3 }
                 ];
     
-                nock(OPENLIGADB_API)
+                nock(OPENLIGA_GET_MATCH_DATA)
                     .get(`/${LEAGUE.BUNDESLIGA_1}`)
                     .reply(200, mockReturn);
     
@@ -89,7 +91,7 @@ describe('The OpenLigaDb SKD', () => {
                     { matchId: 3 }
                 ];
     
-                nock(OPENLIGADB_API)
+                nock(OPENLIGA_GET_MATCH_DATA)
                     .get(`/${LEAGUE.BUNDESLIGA_1}/2017`)
                     .reply(200, mockReturn);
     
@@ -105,7 +107,7 @@ describe('The OpenLigaDb SKD', () => {
 
                 const mockReturn: any = [];
     
-                nock(OPENLIGADB_API)
+                nock(OPENLIGA_GET_MATCH_DATA)
                     .get(`/${LEAGUE.BUNDESLIGA_2}/9999`)
                     .reply(200, mockReturn);
     
@@ -129,7 +131,7 @@ describe('The OpenLigaDb SKD', () => {
                     { matchId: 3 }
                 ];
     
-                nock(OPENLIGADB_API)
+                nock(OPENLIGA_GET_MATCH_DATA)
                     .get(`/${LEAGUE.BUNDESLIGA_1}/8`)
                     .reply(200, mockReturn);
     
@@ -145,7 +147,7 @@ describe('The OpenLigaDb SKD', () => {
 
                 const mockReturn: any = [];
     
-                nock(OPENLIGADB_API)
+                nock(OPENLIGA_GET_MATCH_DATA)
                     .get(`/${LEAGUE.BUNDESLIGA_2}/80`)
                     .reply(200, mockReturn);
     
@@ -165,7 +167,7 @@ describe('The OpenLigaDb SKD', () => {
 
                 const mockReturn: any = { matchId: 555 };
     
-                nock(OPENLIGADB_API)
+                nock(OPENLIGA_GET_MATCH_DATA)
                     .get(`/${mockReturn.matchId}`)
                     .reply(200, mockReturn);
     
@@ -178,5 +180,23 @@ describe('The OpenLigaDb SKD', () => {
 
         });
 
+        describe('getCurrent group by league', () => {
+            it('should be able to get the current group of a league', async () => {
+                const mockReturn: any = {
+                    groupId: 44,
+                    groupName: '34. Spieltag',
+                    groupOrderId: 1
+                };
+
+                nock(OPENLIGA_GET_CURRENT_GROUP)
+                    .get(`/${LEAGUE.BUNDESLIGA_2}`)
+                    .reply(200, mockReturn);
+                
+                const testCient = new OpenLigaDB({ defaultLeague: LEAGUE.BUNDESLIGA_2 });
+                const restultForCurrentGroup = await testCient.getCurrentGroup();
+
+                expect(restultForCurrentGroup).toEqual(mockReturn);
+            });
+        });
     });
 });

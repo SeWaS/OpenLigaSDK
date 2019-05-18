@@ -3,11 +3,13 @@ import { ClientOptions } from "./types/client.options";
 import { LEAGUE } from "./types/league.enum";
 import { HttpClient } from "./http.client";
 import { Match } from "./types/match";
+import { Group } from "./types/group";
 
 export class OpenLigaDB {
 
     private OPENLIGADB_API = 'https://www.openligadb.de/api';
     private readonly GETMATCHDATA = `/getmatchdata`;
+    private readonly GETCURRENTGROUP = `getcurrentgroup`;
 
     private _responseType: RESPONSE_TYPE = RESPONSE_TYPE.JSON;
     private _defaultLeague: LEAGUE = LEAGUE.BUNDESLIGA_1;
@@ -71,6 +73,11 @@ export class OpenLigaDB {
 
     public async getMatchByNumber(matchId: number): Promise<Match> {
         return this.httpClient.get<Match>(`${this.GETMATCHDATA}/${matchId}`);
+    }
+
+    public async getCurrentGroup(league?: LEAGUE): Promise<Group> {
+        const givenLeaeguee = league || this.defaultLeague;
+        return this.httpClient.get<Group>(`${this.GETCURRENTGROUP}/${givenLeaeguee}`);
     }
 
 }
